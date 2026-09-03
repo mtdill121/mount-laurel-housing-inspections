@@ -1,0 +1,16 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Mount Laurel Housing Inspections — Preview</title>
+<style>body{font-family:Arial,sans-serif;background:#f3f6f8;margin:0;display:grid;place-items:center;min-height:100vh;color:#17324a}.box{max-width:680px;padding:28px;background:#fff;border:1px solid #ccd7df;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.08)}.muted{color:#607386}</style></head><body><div class="box"><h2>Loading Housing Inspections Preview…</h2><div class="muted" id="status">Preparing v15.6 test build.</div></div>
+<script>
+(async()=>{
+ try{
+  if(!('DecompressionStream' in window)) throw new Error('This browser needs a newer version of Safari or Chrome for the preview build.');
+  const files=['part_01.txt','part_02.txt','part_03.txt','part_04.txt','part_05.txt','part_06.txt','part_07.txt','part_08.txt','part_09.txt','part_10.txt','part_11.txt','part_12.txt'];
+  let b64='';
+  for(let i=0;i<files.length;i++){document.getElementById('status').textContent=`Loading ${i+1} of ${files.length}…`; b64+=await (await fetch(files[i]+'?v=156')).text();}
+  const bin=atob(b64); const bytes=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+  const ds=new DecompressionStream('gzip'); const html=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
+  document.open(); document.write(html); document.close();
+ }catch(e){document.getElementById('status').textContent='Preview could not load: '+e.message; console.error(e);}
+})();
+</script></body></html>
