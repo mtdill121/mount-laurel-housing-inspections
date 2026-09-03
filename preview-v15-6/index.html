@@ -5,9 +5,9 @@
 (async()=>{
  try{
   if(!('DecompressionStream' in window)) throw new Error('This browser needs a newer version of Safari or Chrome for the preview build.');
-  const files=['part_01.txt','part_02.txt','part_03.txt','part_04.txt','part_05.txt','part_06.txt','part_07.txt','part_08.txt','part_09.txt','part_10.txt','part_11.txt','part_12.txt'];
+  const files=['part_01.txt','part_02.txt','part_03.txt','part_04.txt','part_05.txt','part_06.txt','part_07.txt','part_08.txt','part_09.txt','part_10.txt','part_11a.txt','part_11b.txt','part_12.txt'];
   let b64='';
-  for(let i=0;i<files.length;i++){document.getElementById('status').textContent=`Loading ${i+1} of ${files.length}…`; b64+=await (await fetch(files[i]+'?v=156')).text();}
+  for(let i=0;i<files.length;i++){document.getElementById('status').textContent=`Loading ${i+1} of ${files.length}…`; const r=await fetch(files[i]+'?v=156a'); if(!r.ok) throw new Error('Could not load '+files[i]); b64+=await r.text();}
   const bin=atob(b64); const bytes=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
   const ds=new DecompressionStream('gzip'); const html=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
   document.open(); document.write(html); document.close();
